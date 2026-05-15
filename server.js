@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const User = require("./models/User");
 const Item = require("./models/Item");
-const Auth = require("./middleware/Auth");
+const auth = require("./middleware/auth");
 
 const app = express();
 
