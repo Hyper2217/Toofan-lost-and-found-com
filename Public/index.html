@@ -40,12 +40,15 @@ button{background:green;color:white;border:none}
 </div>
 
 <div id="items"></div>
+ const API = "https://toofan-lost-and-found-com.onrender.com/api/items";
+const AUTH_API = "https://toofan-lost-and-found-com.onrender.com/api";
 
 <script>
 let token = "";
+ const BASE_URL = "https://toofan-lost-and-found-com.onrender.com";
 
 async function register(){
- await fetch("/api/register",{
+ await fetch(`${BASE_URL}/api/register`,{
   method:"POST",
   headers:{"Content-Type":"application/json"},
   body:JSON.stringify({
@@ -57,7 +60,7 @@ async function register(){
 }
 
 async function login(){
- const res = await fetch("/api/login",{
+const res = await fetch(`${BASE_URL}/api/login`,{
   method:"POST",
   headers:{"Content-Type":"application/json"},
   body:JSON.stringify({
@@ -73,7 +76,7 @@ async function login(){
 }
 
 async function addItem(){
- await fetch("/api/items",{
+ await fetch(`${BASE_URL}/api/items`,{
   method:"POST",
   headers:{
    "Content-Type":"application/json",
@@ -92,7 +95,7 @@ async function addItem(){
 }
 
 async function load(){
- const res = await fetch("/api/items");
+ const res = await fetch(`${BASE_URL}/api/items`);
  const data = await res.json();
 
  items.innerHTML = data.map(i=>`
