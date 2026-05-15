@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const User = require("./models/User");
 const Item = require("./models/Item");
-const auth = require("./middleware/auth");
+const auth = require("./middleware/Auth");
 
 const app = express();
 app.use(cors());
