@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Toofan lost & Found </title>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;text-align:center}
+.box{background:#1f2937;padding:20px;margin:10px auto;width:300px;border-radius:10px}
+input,button{width:100%;padding:10px;margin:5px}
+button{background:green;color:white;border:none}
+.item{background:#111827;margin:10px;padding:10px;border-radius:10px}
+</style>
+</head>
+
+<body>
+
+<h1>📍 Lost & Found </h1>
+
+<div class="box">
+<h3>Register</h3>
+<input id="rEmail" placeholder="email">
+<input id="rPass" type="password" placeholder="password">
+<button onclick="register()">Register</button>
+</div>
+
+<div class="box">
+<h3>Login</h3>
+<input id="lEmail" placeholder="email">
+<input id="lPass" type="password" placeholder="password">
+<button onclick="login()">Login</button>
+</div>
+
+<div class="box">
+<h3>Add Item</h3>
+<input id="title" placeholder="title">
+<input id="type" placeholder="lost/found">
+<input id="desc" placeholder="description">
+<input id="loc" placeholder="location">
+<input id="contact" placeholder="contact">
+<button onclick="addItem()">Post</button>
+</div>
+
+<div id="items"></div>
+
+<script>
+let token = "";
+
+async function register(){
+ await fetch("/api/register",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    email:rEmail.value,
+    password:rPass.value
+  })
+ });
+ alert("Registered");
+}
+
+async function login(){
+ const res = await fetch("/api/login",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    email:lEmail.value,
+    password:lPass.value
+  })
+ });
+
+ const data = await res.json();
+ token = data.token;
+ alert("Logged in");
+ load();
+}
+
+async function addItem(){
+ await fetch("/api/items",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json",
+   "Authorization":token
+  },
+  body:JSON.stringify({
+   title:title.value,
+   type:type.value,
+   description:desc.value,
+   location:loc.value,
+   contact:contact.value
+  })
+ });
+
+ load();
+}
+
+async function load(){
+ const res = await fetch("/api/items");
+ const data = await res.json();
+
+ items.innerHTML = data.map(i=>`
+  <div class="item">
+   <h3>${i.title}</h3>
+   <p>${i.type}</p>
+   <p>${i.description}</p>
+   <p>${i.location}</p>
+  </div>
+ `).join("");
+}
+
+load();
+</script>
+
+</body>
+</html>
